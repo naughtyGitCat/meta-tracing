@@ -1,0 +1,75 @@
+#=================================================
+# https://github.com/yangchuansheng/clash-tracing
+# Description: Build and push clash-tracing Docker image
+# Lisence: MIT
+# Author: Carson Yang
+# Blog: https://icloudnative.io
+#=================================================
+
+name: Build and push clash-tracing Docker image
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+    paths: 
+      - 'Dockerfile'
+      - '.github/workflows/docker.yml'
+  pull_request:
+    branches: [ master ]
+    paths: 
+      - 'Dockerfile'
+
+env:
+  GHCR_USER: ${{ github.actor }}
+  GHCR_PASSWORD: ${{ github.token }}
+  GHCR_REGISTRY: ghcr.io/${{ github.repository_owner }}
+  DOCKERHUB_USER: yangchuansheng
+  DOCKERHUB_REGISTRY: docker.io
+  DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Login to DockerHub
+      uses: redhat-actions/podman-login@v1
+      with:
+        username: ${{ env.DOCKERHUB_USER }}
+        password: ${{ env.DOCKERHUB_PASSWORD }}
+        registry: ${{ env.DOCKERHUB_REGISTRY }} 
+        
+    - name: Log in to ghcr.io
+      uses: redhat-actions/podman-login@v1
+      with:
+        username: ${{ env.GHCR_USER }}
+        password: ${{ env.GHCR_PASSWORD }}
+        registry: ${{ env.GHCR_REGISTRY }}
+
+    # Runs a single command using the runners shell
+    - name: Build and push Docker images to docker.io and ghcr.io
+      uses: docker/build-push-action@v2
+      with:
+        file: 'Dockerfile'
+        platforms: linux/amd64
+        context: ./
+        push: true
+        tags: |
+          yangchuansheng/clash-tracing:latest
+          ${{ env.GHCR_REGISTRY }}/clash-tracing:latest
