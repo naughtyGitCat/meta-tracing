@@ -24,7 +24,7 @@ on:
 
 env:
   GHCR_USER: ${{ github.actor }}
-  GHCR_PASSWORD: ${{ github.token }}
+  GHCR_PASSWORD: ${{ secrets.GHCR_PASSWORD }}
   GHCR_REGISTRY: ghcr.io/${{ github.repository_owner }}
   DOCKERHUB_USER: yangchuansheng
   DOCKERHUB_REGISTRY: docker.io
