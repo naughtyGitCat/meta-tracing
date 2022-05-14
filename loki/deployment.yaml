@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loki
+  namespace: monitoring
+  labels:
+    app: loki
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: loki
+  template:
+    metadata:
+      labels:
+        app: loki
+    spec:
+      tolerations:
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/ingress
+        operator: Exists
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/master
+        operator: Exists
+      containers:
+      - name: loki
+        image: grafana/loki:2.4.2 
+        ports:
+        - containerPort: 3100
+        volumeMounts:
+        - mountPath: /etc/localtime 
+          name: time
+          readOnly: False
+        - mountPath: /etc/loki/
+          name: loki
+          readOnly: true
+      volumes:
+      - hostPath:
+          path: /etc/localtime
+        name: time
+      - configMap:
+          defaultMode: 420
+          items:
+          - key: local-config.yaml
+            path: local-config.yaml
+          name: loki
+        name: loki

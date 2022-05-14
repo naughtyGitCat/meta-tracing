@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clash-tracing
+  namespace: monitoring
+  labels:
+    app: clash-tracing
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: clash-tracing
+  template:
+    metadata:
+      labels:
+        app: clash-tracing
+    spec:
+      tolerations:
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/ingress
+        operator: Exists
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/master
+        operator: Exists
+      volumes:
+      - name: time 
+        hostPath:
+          path: /etc/localtime
+      containers:
+      - name: clash-tracing
+        image: ghcr.io/yangchuansheng/clash-tracing:latest
+        env:
+        - name: CLASH_HOST
+          value: '192.168.100.254:9090'
+        - name: CLASH_TOKEN
+          value: '123456'
+        - name: VECTOR_ADDR
+          value: 'vector:9000'
+        volumeMounts:
+        - mountPath: /etc/localtime 
+          name: time
+          readOnly: False

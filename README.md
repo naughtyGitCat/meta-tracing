@@ -4,7 +4,7 @@ An example of a clash tracing exporter API.
 
 ### Screenshot
 
-![screenshot](./screenshot/screenshot.png)
+![screenshot](./screenshot/screenshot.webp)
 
 ### How to use
 
