@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sed -i "s/\"datasource\": {}/\"datasource\": loki/g" panels/*
+sed -i "s/\"datasource\": {}/\"datasource\": \"loki\"/g" panels/*
