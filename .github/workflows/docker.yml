@@ -51,8 +51,8 @@ jobs:
     - name: Login to DockerHub
       uses: docker/login-action@v1 
       with:
-        username: ${{ env.DOCKERHUB_USER }}
-        password: ${{ env.DOCKERHUB_PASSWORD }}
+        username: ${{ secrets.DOCKERHUB_USER }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
         
     - name: Login to GitHub Package Registry
       env:
@@ -69,5 +69,5 @@ jobs:
         context: ./
         push: true
         tags: |
-          yangchuansheng/clash-tracing:latest
+          naughtygitcat/clash-tracing:latest
           ${{ env.GHCR_REGISTRY }}/clash-tracing:latest
