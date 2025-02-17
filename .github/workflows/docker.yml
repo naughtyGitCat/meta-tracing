@@ -56,8 +56,8 @@ jobs:
 
     - name: Login to GitHub Package Registry
       env:
-        username: ${{ env.GHCR_USER }}
-        password: ${{ env.GHCR_PASSWORD }}
+        username: ${{ secrets.GHCR_USER }}
+        password: ${{ secrets.GHCR_PASSWORD }}
       run: echo ${{ env.password }} | docker login ghcr.io -u ${{ env.username }} --password-stdin 
 
     # Runs a single command using the runners shell
