@@ -23,12 +23,13 @@ on:
       - 'Dockerfile'
 
 env:
-  GHCR_USER: ${{ github.actor }}
-  GHCR_PASSWORD: ${{ secrets.GHCR_PASSWORD }}
-  GHCR_REGISTRY: ghcr.io/${{ github.repository_owner }}
   DOCKERHUB_USER: naughtygitcat
   DOCKERHUB_REGISTRY: docker.io
   DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+  GHCR_USER: ${{ github.actor }}
+  GHCR_PASSWORD: ${{ secrets.GHCR_PASSWORD }}
+  GHCR_REGISTRY: ghcr.io/${{ DOCKERHUB_USER }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -51,13 +52,13 @@ jobs:
     - name: Login to DockerHub
       uses: docker/login-action@v3
       with:
-        username: ${{ secrets.DOCKERHUB_USER }}
-        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+        username: ${{ env.DOCKERHUB_USER }}
+        password: ${{ env.DOCKERHUB_PASSWORD }}
 
     - name: Login to GitHub Package Registry
       env:
-        username: ${{ secrets.GHCR_USER }}
-        password: ${{ secrets.GHCR_PASSWORD }}
+        username: ${{ env.GHCR_USER }}
+        password: ${{ env.GHCR_PASSWORD }}
       run: echo ${{ env.password }} | docker login ghcr.io -u ${{ env.username }} --password-stdin 
 
     # Runs a single command using the runners shell
@@ -69,5 +70,5 @@ jobs:
         context: ./
         push: true
         tags: |
-          naughtygitcat/clash-tracing:latest
-          ${{ env.GHCR_REGISTRY }}/clash-tracing:latest
+          naughtygitcat/meta-tracing:latest
+          ${{ env.GHCR_REGISTRY }}/meta-tracing:latest
