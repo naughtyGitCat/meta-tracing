@@ -29,7 +29,7 @@ env:
 
   GHCR_USER: ${{ github.actor }}
   GHCR_PASSWORD: ${{ secrets.GHCR_PASSWORD }}
-  GHCR_REGISTRY: ghcr.io/${{ DOCKERHUB_USER }}
+  GHCR_REGISTRY: ghcr.io/${{ env.DOCKERHUB_USER }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
