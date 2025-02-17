@@ -88,9 +88,9 @@ func dialTrafficChan(ctx context.Context, clashHost string, clashToken string, c
 func dialTracingChan(ctx context.Context, clashHost string, clashToken string, ch chan []byte) chan struct{} {
 	var clashUrl string
 	if clashToken == "" {
-		clashUrl = fmt.Sprintf("ws://%s/profile/tracing", clashHost)
+		clashUrl = fmt.Sprintf("ws://%s/logs", clashHost)
 	} else {
-		clashUrl = fmt.Sprintf("ws://%s/profile/tracing?token=%s", clashHost, clashToken)
+		clashUrl = fmt.Sprintf("ws://%s/logs?token=%s", clashHost, clashToken)
 	}
 
 	return dialWebsocketToChan(context.Background(), clashUrl, ch)

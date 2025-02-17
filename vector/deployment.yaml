@@ -35,7 +35,8 @@ spec:
         name: vector
       containers:
       - name: vector
-        image: timberio/vector:0.X-alpine
+        image: timberio/vector:latest-alpine
+        args: ["-c", "/etc/vector/vector.toml"]
         ports:
         - containerPort: 9000
         volumeMounts:

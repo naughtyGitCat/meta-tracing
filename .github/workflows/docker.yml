@@ -26,7 +26,7 @@ env:
   GHCR_USER: ${{ github.actor }}
   GHCR_PASSWORD: ${{ secrets.GHCR_PASSWORD }}
   GHCR_REGISTRY: ghcr.io/${{ github.repository_owner }}
-  DOCKERHUB_USER: yangchuansheng
+  DOCKERHUB_USER: naughtygitcat
   DOCKERHUB_REGISTRY: docker.io
   DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
